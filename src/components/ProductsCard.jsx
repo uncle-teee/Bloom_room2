@@ -6,7 +6,7 @@ const Products = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await axios.get("http://localhost:5000/products");
+      const response = await axios.get("http://TeeKinyanjui/products");
       setProducts(response.data);
     };
     fetchProducts();

@@ -1,0 +1,71 @@
+/* Navbar container */
+.bloom-navbar {
+    background-color: #ff69b4; /* Main pink color */
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  /* Navbar brand (logo/title) */
+  .bloom-navbar .bloom-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff; /* White text for the brand */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+  }
+  
+  .bloom-navbar .bloom-brand:hover {
+    color: #ffe4e1; /* Light pink on hover */
+    text-decoration: none;
+  }
+  
+  /* Navbar links */
+  .bloom-navbar .bloom-link {
+    color: #ffffff; /* White text for links */
+    font-weight: bold;
+    margin-right: 15px;
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .bloom-navbar .bloom-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #ffe4e1; /* Light pink underline */
+    left: 0;
+    bottom: -3px;
+    transition: width 0.3s ease;
+  }
+  
+  .bloom-navbar .bloom-link:hover {
+    color: #ffe4e1; /* Light pink on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    text-decoration: none;
+  }
+  
+  .bloom-navbar .bloom-link:hover::after {
+    width: 100%; /* Expand underline on hover */
+  }
+  
+  /* Navbar toggler (hamburger menu) */
+  .bloom-navbar .navbar-toggler {
+    border: none;
+  }
+  
+  .bloom-navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .bloom-navbar .bloom-link {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
