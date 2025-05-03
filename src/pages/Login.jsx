@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import "./Login.css"; // Import the CSS file for styling
+import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState(""); // Use username instead of email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,16 +14,27 @@ const Login = () => {
     try {
       const response = await axios.post(
         "https://TeeKinyanjui.pythonanywhere.com/login",
-        { email, password }
+        { username, password }
       );
-      localStorage.setItem("user", JSON.stringify(response.data));
+
+      // Save token and user info
+      localStorage.setItem("token", response.data.token); // Save JWT token
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: response.data.user_id,
+          is_admin: response.data.is_admin,
+        })
+      );
+
+      // Redirect based on role
       if (response.data.is_admin) {
-        navigate("/admin-dashboard"); // Redirect to Admin Dashboard
+        navigate("/admin-dashboard");
       } else {
-        navigate("/products"); // Redirect to Products page for regular users
+        navigate("/");
       }
     } catch (err) {
-      setError("Invalid email or password");
+      setError("Invalid username or password");
       console.error(err);
     }
   };
@@ -34,13 +45,13 @@ const Login = () => {
         <h2 className="login-title">Welcome Back</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label>Username</label>
             <input
-              type="email"
+              type="text"
               className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
               required
             />
           </div>
@@ -55,9 +66,7 @@ const Login = () => {
               required
             />
           </div>
-
           <br />
-          
           <button type="submit" className="btn btn-primary w-100">
             Login
           </button>

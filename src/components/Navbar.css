@@ -1,71 +1,142 @@
-/* Navbar container */
+/* Navbar Container - Now Visible */
 .bloom-navbar {
-    background-color: #ff69b4; /* Main pink color */
-    padding: 10px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  background: white;
+  padding: 15px 0;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #ff69b4; /* Theme-colored bottom border */
+  position: relative; /* Ensures shadow appears */
+  z-index: 1000; /* Keeps navbar above other content */
+}
+
+/* Brand Logo - More Prominent */
+.bloom-brand {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff69b4 !important; /* Theme color */
+  text-decoration: none;
+  transition: all 0.3s;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Menu Links - Better Contrast */
+.nav-link {
+  color: #555 !important;
+  font-weight: 600; /* Bolder text */
+  padding: 8px 15px !important;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.nav-link:hover {
+  color: #ff69b4 !important;
+  background: rgba(255, 105, 180, 0.1); /* Light pink bg on hover */
+}
+
+/* Active Link Styling */
+.nav-link.active {
+  color: #ff69b4 !important;
+  font-weight: 700;
+}
+
+/* CTA Button - Even More Prominent */
+.cta-button {
+  background: #ff69b4;
+  color: white !important;
+  padding: 8px 25px !important;
+  border-radius: 30px;
+  font-weight: 700;
+  margin-left: 15px;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.cta-button:hover {
+  background: white;
+  color: #ff69b4 !important;
+  border-color: #ff69b4;
+  transform: translateY(-2px);
+}
+
+/* Mobile Menu Styling */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    background: white;
+    border: 1px solid #ff69b4; /* Theme border */
+    margin-top: 10px;
   }
-  
-  /* Navbar brand (logo/title) */
-  .bloom-navbar .bloom-brand {
-    font-size: 24px;
-    font-weight: bold;
-    color: #ffffff; /* White text for the brand */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
+
+  .nav-link {
+    padding: 10px !important;
+    margin: 5px 0;
   }
-  
-  .bloom-navbar .bloom-brand:hover {
-    color: #ffe4e1; /* Light pink on hover */
-    text-decoration: none;
-  }
-  
-  /* Navbar links */
-  .bloom-navbar .bloom-link {
-    color: #ffffff; /* White text for links */
-    font-weight: bold;
-    margin-right: 15px;
-    position: relative;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .bloom-navbar .bloom-link::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 2px;
-    background-color: #ffe4e1; /* Light pink underline */
-    left: 0;
-    bottom: -3px;
-    transition: width 0.3s ease;
-  }
-  
-  .bloom-navbar .bloom-link:hover {
-    color: #ffe4e1; /* Light pink on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-    text-decoration: none;
-  }
-  
-  .bloom-navbar .bloom-link:hover::after {
-    width: 100%; /* Expand underline on hover */
-  }
-  
-  /* Navbar toggler (hamburger menu) */
-  .bloom-navbar .navbar-toggler {
-    border: none;
-  }
-  
-  .bloom-navbar .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .bloom-navbar .bloom-link {
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  }
+}
+
+/* Cart Icon Styling */
+.nav-link box-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+  transition: all 0.3s;
+}
+
+.nav-link:hover box-icon {
+  animation: tada 0.5s;
+}
+
+/* Navbar Styles */
+.bloom-navbar {
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+}
+
+.bloom-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ff69b4;
+  text-decoration: none;
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-right: 15px;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+  color: #ff69b4;
+}
+
+/* Wishlist Link */
+.wishlist-nav-item {
+  position: relative;
+}
+
+.wishlist-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #ff69b4;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.wishlist-link:hover {
+  transform: scale(1.1);
+}
+
+.wishlist-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: #ff4081;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: inline-block;
+  text-align: center;
+}

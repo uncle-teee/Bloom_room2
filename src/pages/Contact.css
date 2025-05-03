@@ -1,0 +1,109 @@
+/* Contact Page Styles */
+.contact-page {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Hero Section */
+.contact-hero {
+  background-color: #301934;
+  color: #fff;
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.contact-hero h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.contact-hero p {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* Main Content */
+.contact-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.contact-info h2 {
+  font-size: 24px;
+  color: #301934;
+  margin-bottom: 10px;
+}
+
+.contact-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.contact-info li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.contact-info li i {
+  margin-right: 10px;
+  color: #ff69b4;
+}
+
+.contact-info a {
+  color: #ff69b4;
+  text-decoration: none;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+/* Contact Form */
+.contact-form-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.contact-button {
+  background-color: #ff69b4;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-button:hover {
+  background-color: #d44a88;
+}
+
+/* Google Map */
+.contact-map {
+  margin: 20px auto;
+  max-width: 1200px;
+}

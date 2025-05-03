@@ -1,0 +1,58 @@
+/* Side Menu Container */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Hidden by default */
+    width: 250px;
+    height: 100%;
+    background-color: #ff69b4; /* Theme color */
+    color: #fff;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  /* Open State */
+  .side-menu.open {
+    left: 0; /* Slide in */
+  }
+  
+  /* Menu Toggle Button */
+  .menu-toggle {
+    position: absolute;
+    top: 20px;
+    right: -50px;
+    background-color: #ff69b4;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Menu Items */
+  .menu-items {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .menu-items a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+  
+  .menu-items a:hover {
+    color: #ffe4e1; /* Light pink on hover */
+  }

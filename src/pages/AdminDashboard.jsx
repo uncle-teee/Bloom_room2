@@ -1,57 +1,46 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]); // State for orders
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true); // Loading state
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [showEditProductModal, setShowEditProductModal] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
-    description: "",
     price: "",
+    stock: "",
     category: "",
-    image: null, // Updated to handle file uploads
+    image: null,
   });
-  const [editingProduct, setEditingProduct] = useState(null); // Product being edited
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Fetch all products and orders when the component loads
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProducts = async () => {
       try {
-        // Fetch products
-        const productsResponse = await axios.get(
-          "https://TeeKinyanjui.pythonanywhere.com/products"
-        );
-        setProducts(productsResponse.data);
-
-        // Fetch orders
-        const ordersResponse = await axios.get(
-          "https://TeeKinyanjui.pythonanywhere.com/orders"
-        );
-        setOrders(ordersResponse.data);
-
-        setLoading(false); // Stop loading
+        const response = await axios.get("https://TeeKinyanjui.pythonanywhere.com/products");
+        setProducts(response.data);
+        setLoading(false);
       } catch (err) {
-        setError("Failed to fetch data. Please try again later.");
-        setLoading(false); // Stop loading
-        console.error(err);
+        setError("Failed to fetch products.");
+        setLoading(false);
       }
     };
 
-    fetchData();
+    fetchProducts();
   }, []);
 
-  // Handle adding a new product
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append("name", newProduct.name);
-    formData.append("description", newProduct.description);
     formData.append("price", newProduct.price);
+    formData.append("stock", newProduct.stock);
     formData.append("category", newProduct.category);
-    formData.append("image", newProduct.image); // Append the image file
+    formData.append("image", newProduct.image);
 
     try {
       const response = await axios.post(
@@ -63,54 +52,34 @@ const AdminDashboard = () => {
           },
         }
       );
-      setProducts([...products, response.data.product]); // Add the new product to the list
-      setNewProduct({ name: "", description: "", price: "", category: "", image: null });
-      setError("");
+      setProducts([...products, response.data.product]);
+      setShowAddProductModal(false);
+      setNewProduct({ name: "", price: "", stock: "", category: "", image: null });
     } catch (err) {
       setError("Failed to add product.");
-      console.error(err);
     }
   };
 
-  // Handle deleting a product
-  const handleDeleteProduct = async (productId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
-    if (!confirmDelete) return;
-
-    try {
-      await axios.delete(
-        `https://TeeKinyanjui.pythonanywhere.com/products/${productId}`
-      );
-      setProducts(products.filter((product) => product.id !== productId));
-      setError("");
-    } catch (err) {
-      setError("Failed to delete product.");
-      console.error(err);
-    }
-  };
-
-  // Handle editing a product
   const handleEditProduct = (product) => {
-    setEditingProduct(product); // Set the product to be edited
-    setNewProduct({ ...product, image: null }); // Populate the form with the product's details
+    setCurrentProduct(product);
+    setShowEditProductModal(true);
   };
 
-  // Handle saving an edited product
-  const handleSaveEdit = async (e) => {
+  const handleUpdateProduct = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", newProduct.name);
-    formData.append("description", newProduct.description);
-    formData.append("price", newProduct.price);
-    formData.append("category", newProduct.category);
-    if (newProduct.image) {
-      formData.append("image", newProduct.image); // Append the image file if it exists
+    formData.append("name", currentProduct.name);
+    formData.append("price", currentProduct.price);
+    formData.append("stock", currentProduct.stock);
+    formData.append("category", currentProduct.category);
+    if (currentProduct.image) {
+      formData.append("image", currentProduct.image);
     }
 
     try {
       await axios.put(
-        `https://TeeKinyanjui.pythonanywhere.com/products/${editingProduct.id}`,
+        `https://TeeKinyanjui.pythonanywhere.com/products/${currentProduct.id}`,
         formData,
         {
           headers: {
@@ -120,128 +89,232 @@ const AdminDashboard = () => {
       );
       setProducts(
         products.map((product) =>
-          product.id === editingProduct.id ? { ...newProduct, id: product.id } : product
+          product.id === currentProduct.id ? currentProduct : product
         )
       );
-      setEditingProduct(null); // Clear the editing state
-      setNewProduct({ name: "", description: "", price: "", category: "", image: null });
-      setError("");
+      setShowEditProductModal(false);
+      setCurrentProduct(null);
     } catch (err) {
       setError("Failed to update product.");
-      console.error(err);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (showEditProductModal) {
+      setCurrentProduct({ ...currentProduct, [name]: value });
+    } else {
+      setNewProduct({ ...newProduct, [name]: value });
+    }
+  };
+
+  const handleImageChange = (e) => {
+    if (showEditProductModal) {
+      setCurrentProduct({ ...currentProduct, image: e.target.files[0] });
+    } else {
+      setNewProduct({ ...newProduct, image: e.target.files[0] });
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading spinner
+    return <div className="loading-spinner">Loading...</div>;
   }
 
   return (
-    <div>
-      <h2>Admin Dashboard</h2>
-
-      {/* Error Message */}
-      {error && <div className="text-danger">{error}</div>}
-
-      {/* Add/Edit Product Form */}
-      <div className="mb-4">
-        <h3>{editingProduct ? "Edit Product" : "Add New Product"}</h3>
-        <form onSubmit={editingProduct ? handleSaveEdit : handleAddProduct}>
-          <div className="form-group">
-            <label>Name</label>
-            <input
-              type="text"
-              className="form-control"
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Description</label>
-            <textarea
-              className="form-control"
-              value={newProduct.description}
-              onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-              required
-            ></textarea>
-          </div>
-          <div className="form-group">
-            <label>Price</label>
-            <input
-              type="number"
-              className="form-control"
-              value={newProduct.price}
-              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Category</label>
-            <input
-              type="text"
-              className="form-control"
-              value={newProduct.category}
-              onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Image</label>
-            <input
-              type="file"
-              className="form-control"
-              onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary mt-3">
-            {editingProduct ? "Save Changes" : "Add Product"}
-          </button>
-        </form>
-      </div>
-
-      {/* Products List */}
-      <div className="mb-5">
-        <h3>Products</h3>
-        <ul className="list-group">
-          {products.map((product) => (
-            <li className="list-group-item" key={product.id}>
-              <strong>{product.name}</strong> - ${product.price}
-              <button
-                className="btn btn-warning btn-sm float-right ml-2"
-                onClick={() => handleEditProduct(product)}
-              >
-                Edit
-              </button>
-              <button
-                className="btn btn-danger btn-sm float-right"
-                onClick={() => handleDeleteProduct(product.id)}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
+    <div className="dashboard-container">
+      <aside className="sidebar">
+        <h2 className="admin-title">Admin</h2>
+        <ul className="sidebar-menu">
+          <li className="sidebar-item">
+            <a href="#products">Manage Products</a>
+          </li>
         </ul>
-      </div>
+      </aside>
 
-      {/* Orders Section */}
-      <div>
-        <h3>Orders</h3>
-        {orders.length === 0 ? (
-          <p>No orders found.</p>
-        ) : (
-          <ul className="list-group">
-            {orders.map((order) => (
-              <li className="list-group-item" key={order.id}>
-                <strong>Order ID:</strong> {order.id} <br />
-                <strong>User ID:</strong> {order.user_id} <br />
-                <strong>Total:</strong> ${order.total} <br />
-                <strong>Date:</strong> {order.created_at}
-              </li>
-            ))}
-          </ul>
+      <main className="main-content">
+        <section id="products" className="section">
+          <div className="section-header">
+            <h3>Products</h3>
+            <button
+              className="add-button"
+              onClick={() => setShowAddProductModal(true)}
+            >
+              + Add Product
+            </button>
+          </div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.name}</td>
+                  <td>${product.price}</td>
+                  <td>{product.stock || "N/A"}</td>
+                  <td>
+                    <button
+                      className="edit-button"
+                      onClick={() => handleEditProduct(product)}
+                    >
+                      Edit
+                    </button>
+                    <button className="delete-button">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        {/* Add Product Modal */}
+        {showAddProductModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h3>Add Product</h3>
+              <form onSubmit={handleAddProduct}>
+                <div className="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={newProduct.name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Price</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={newProduct.price}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Stock</label>
+                  <input
+                    type="number"
+                    name="stock"
+                    value={newProduct.stock}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={newProduct.category}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Image</label>
+                  <input
+                    type="file"
+                    name="image"
+                    onChange={handleImageChange}
+                    required
+                  />
+                </div>
+                <div className="form-actions">
+                  <button type="submit" className="save-button">
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    className="cancel-button"
+                    onClick={() => setShowAddProductModal(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         )}
-      </div>
+
+        {/* Edit Product Modal */}
+        {showEditProductModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h3>Edit Product</h3>
+              <form onSubmit={handleUpdateProduct}>
+                <div className="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={currentProduct.name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Price</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={currentProduct.price}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Stock</label>
+                  <input
+                    type="number"
+                    name="stock"
+                    value={currentProduct.stock}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={currentProduct.category}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Image</label>
+                  <input
+                    type="file"
+                    name="image"
+                    onChange={handleImageChange}
+                  />
+                </div>
+                <div className="form-actions">
+                  <button type="submit" className="save-button">
+                    Update
+                  </button>
+                  <button
+                    type="button"
+                    className="cancel-button"
+                    onClick={() => setShowEditProductModal(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 };

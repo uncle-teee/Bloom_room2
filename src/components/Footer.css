@@ -1,0 +1,108 @@
+.footer {
+    background: #333;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-section {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .footer-section h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #ff69b4;
+  }
+  
+  .footer-section p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-section ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-section ul li a:hover {
+    color: #ff69b4;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-icons a {
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  .social-icons a:hover {
+    transform: scale(1.2);
+    color: #ff69b4;
+  }
+  
+  .footer-bottom {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 20px;
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+
+  /* Social Media Section */
+.footer-section.social {
+  text-align: center; /* Center-align the entire section */
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center; /* Center the icons horizontally */
+  gap: 15px; /* Add spacing between icons */
+  margin-top: 10px;
+}
+
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #301934; /* Background color for icons */
+  border-radius: 50%; /* Make the icons circular */
+  transition: background-color 0.3s ease;
+}
+
+.social-icons a:hover {
+  background-color: #ff69b4; /* Change background color on hover */
+}
+
+.social-icons box-icon {
+  width: 24px;
+  height: 24px;
+  color: #fff; /* Icon color */
+}
