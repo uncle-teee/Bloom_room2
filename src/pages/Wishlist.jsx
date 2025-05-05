@@ -22,22 +22,21 @@ const Wishlist = () => {
           throw new Error("Failed to fetch wishlist products");
         }
         const data = await response.json();
-        console.log("Fetched Wishlist Products:", data); // Debugging log
+        console.log("Fetched Wishlist Products:", data);
         setWishlistProducts(data);
       } catch (err) {
         console.error("Fetch error:", err);
         toast.error("Failed to load wishlist. Please try again later.");
       }
     };
-  
+
     fetchWishlistProducts();
   }, [token, userId]);
 
-  
-  const removeFromWishlist = async (productId) => {
+  const removeFromWishlist = async (favoriteId) => {
     try {
       const response = await fetch(
-        `https://teekinyanjui.pythonanywhere.com/api/favorites/${productId}`,
+        `https://teekinyanjui.pythonanywhere.com/api/favorites/${favoriteId}`,
         {
           method: "DELETE",
           headers: {
@@ -48,7 +47,7 @@ const Wishlist = () => {
       if (!response.ok) {
         throw new Error("Failed to remove product from wishlist");
       }
-      setWishlistProducts(wishlistProducts.filter((product) => product.id !== productId));
+      setWishlistProducts(wishlistProducts.filter((product) => product.favorite_id !== favoriteId));
       toast.success("Removed from wishlist.");
     } catch (err) {
       console.error("Error removing from wishlist:", err);
@@ -66,14 +65,14 @@ const Wishlist = () => {
       <h1 className="wishlist-title">Your Wishlist</h1>
       <div className="wishlist-grid">
         {wishlistProducts.map((product) => (
-          <div key={product.id} className="wishlist-card">
+          <div key={product.favorite_id} className="wishlist-card">
             <img src={product.image_url} alt={product.name} className="wishlist-image" />
             <h3 className="wishlist-name">{product.name}</h3>
             <p className="wishlist-description">{product.description}</p>
             <p className="wishlist-price">KES {product.price.toFixed(2)}</p>
             <button
               className="remove-wishlist-button"
-              onClick={() => removeFromWishlist(product.id)}
+              onClick={() => removeFromWishlist(product.favorite_id)}
             >
               Remove
             </button>

@@ -8,7 +8,6 @@ import Cart from "./components/Cart"; // Assuming Cart is a component
 import AdminDashboard from "./pages/AdminDashboard";
 import 'boxicons'
 import SingleProduct from "./pages/SingleProduct";
-// import Footer from "./components/Footer"; // Import Footer
 import Blogs from "./pages/Blogs"; // Import Blogs page
 import BlogDetails from "./pages/BlogDetails"; // Import BlogDetails page
 import Shop from "./pages/Shop";
@@ -16,7 +15,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Homepage from "./pages/HomePage";
 import Wishlist from "./pages/Wishlist"; // Import Wishlist page
-
+import ChatbotButton from "./components/ChatbotButton"; // Import Chatbot button component
 
 const App = () => {
   return (
@@ -37,8 +36,10 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<SingleProduct />} />
         <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown routes */}
+
         {/* Add other routes here */}
       </Routes>
+      <ChatbotButton /> {/* Add the Chatbot button here */}
       {/* <Footer /> Add Footer here */}
 
     </>

@@ -140,3 +140,17 @@
   display: inline-block;
   text-align: center;
 }
+
+
+.admin-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ff69b4;
+  font-weight: bold;
+}
+
+.admin-link:hover {
+  color: #e75480;
+  text-decoration: none;
+}

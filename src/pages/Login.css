@@ -1,98 +1,148 @@
+/* Global box-sizing reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 /* General body styling */
 body {
-    background-color: #ffe4e1; /* Light pink background */
-    font-family: "Arial", sans-serif;
+  background-color: #ffe4e1;
+  font-family: "Arial", sans-serif;
+  margin: 0;
+}
+
+/* Login container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffe4e1;
+  padding: 20px;
+}
+
+/* Login card */
+.login-card {
+  background: #ffffff;
+  padding: 60px;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Responsive typography and spacing */
+.login-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #444;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-container .form-group label {
+  font-weight: bold;
+  color: #444;
+  font-size: 18px;
+}
+
+.login-container .form-control {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 16px;
+  font-size: 18px;
+  width: 100%;
+}
+
+.login-container .form-control:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
+}
+
+.login-container .btn-primary {
+  background-color: #ff69b4;
+  border: none;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-container .btn-primary:hover {
+  background-color: #e75480;
+  transform: scale(1.05);
+}
+
+.login-container .text-danger {
+  color: #dc3545;
+  font-size: 16px;
+}
+
+.login-container .bloom-link {
+  color: #ff69b4;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-container .bloom-link:hover {
+  color: #e75480;
+  text-decoration: underline;
+}
+
+.login-container .text-center {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  /* Scoped styles for the Login form */
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
-    background-color: #ffe4e1; /* Light pink background */
-    padding: 20px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
+}
+
+/* Tablet responsiveness */
+@media (max-width: 768px) {
   .login-card {
-    background: #ffffff; /* White card background */
-    padding: 60px; /* Increased padding for a bigger form */
-    border-radius: 20px; /* More rounded corners */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow */
-    width: 100%;
-    max-width: 600px; /* Increased max width for a bigger form */
-    animation: fadeIn 0.5s ease-in-out;
+    padding: 40px;
   }
-  
+
   .login-title {
-    font-size: 32px; /* Larger title font size */
-    font-weight: bold;
-    color: #444; /* Dark gray for contrast */
-    text-align: center;
-    margin-bottom: 30px; /* More spacing below the title */
+    font-size: 28px;
   }
-  
-  .login-container .form-group label {
-    font-weight: bold;
-    color: #444; /* Dark gray for labels */
-    font-size: 18px; /* Larger label font size */
-  }
-  
-  .login-container .form-control {
-    border-radius: 10px; /* More rounded input fields */
-    border: 1px solid #ced4da;
-    padding: 16px; /* Larger padding for bigger input fields */
-    font-size: 18px; /* Larger font size for input text */
-  }
-  
-  .login-container .form-control:focus {
-    border-color: #ff69b4; /* Pink border on focus */
-    box-shadow: 0 0 8px rgba(255, 105, 180, 0.5); /* Stronger pink glow on focus */
-  }
-  
+
+  .login-container .form-control,
   .login-container .btn-primary {
-    background-color: #ff69b4; /* Pink button background */
-    border: none;
-    padding: 16px; /* Larger padding for a bigger button */
-    font-size: 20px; /* Larger button text */
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 16px;
+    padding: 14px;
   }
-  
-  .login-container .btn-primary:hover {
-    background-color: #e75480; /* Slightly darker pink on hover */
-    transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 30px;
+    border-radius: 15px;
   }
-  
-  .login-container .text-danger {
-    color: #dc3545; /* Red for error messages */
-    font-size: 16px; /* Larger font size for error messages */
+
+  .login-title {
+    font-size: 24px;
   }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+
+  .login-container .form-group label,
+  .login-container .form-control,
+  .login-container .btn-primary {
+    font-size: 15px;
   }
-  
-  .login-container .bloom-link {
-    color: #ff69b4; /* Main pink color for the link */
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.3s ease;
+
+  .login-container .btn-primary {
+    padding: 12px;
   }
-  
-  .login-container .bloom-link:hover {
-    color: #e75480; /* Slightly darker pink on hover */
-    text-decoration: underline; /* Adds underline on hover for better visibility */
-  }
-  
-  .login-container .text-center {
-    text-align: center;
-    margin-top: 15px; /* Adds spacing above the link container */
-  }
+}

@@ -14,76 +14,22 @@ const Navbar = () => {
   const [user, setUser] = useState(null); // State for user data
 
   useEffect(() => {
-    // Check if the user is logged in
     const token = localStorage.getItem("token");
     const userData = JSON.parse(localStorage.getItem("user"));
-
+  
+    console.log("User Data:", userData); // Debugging
+  
     if (token && userData) {
       setIsLoggedIn(true);
-      setUser(userData);
+      setUser({
+        ...userData,
+        is_admin: userData.is_admin || 0, // Ensure is_admin is included
+      });
     } else {
       setIsLoggedIn(false);
       setUser(null);
     }
-  }, [location]); // Re-check login status on location change
-
-  useEffect(() => {
-    const fetchWishlistCount = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const response = await fetch("https://teekinyanjui.pythonanywhere.com/api/favorites/count", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch wishlist count");
-        }
-
-        const data = await response.json();
-        console.log("Wishlist Count:", data.count); // Debugging log
-        setWishlistCount(data.count); // Update the wishlist count
-      } catch (err) {
-        console.error("Failed to fetch wishlist count:", err);
-        toast.error("Failed to load wishlist count.");
-      }
-    };
-
-    const fetchCartCount = async () => {
-      const token = localStorage.getItem("token"); // Retrieve the access token
-
-      if (isLoggedIn && token) {
-        try {
-          const response = await fetch(`https://teekinyanjui.pythonanywhere.com/api/cart`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the access token in the request
-            },
-          });
-          if (response.ok) {
-            const data = await response.json();
-            console.log("Cart Count:", data.length); // Debugging log
-            setCartCount(data.length); // Update the cart count
-          } else {
-            const errorText = await response.text(); // Read the response as text
-            console.error("Failed to fetch cart count:", errorText);
-          }
-        } catch (err) {
-          console.error("Failed to fetch cart count:", err);
-          toast.error("Failed to load cart count.");
-        }
-      }
-    };
-
-    if (isLoggedIn) {
-      fetchWishlistCount();
-      fetchCartCount();
-    }
-  }, [isLoggedIn]); // Fetch counts when login status changes
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -140,6 +86,16 @@ const Navbar = () => {
                 Contact
               </Link>
             </li>
+
+            {/* Admin Panel Link */}
+            {isLoggedIn && user?.is_admin === 1 && (
+              <li className="nav-item">
+                <Link className="nav-link bloom-link admin-link" to="/admin-dashboard">
+                  <box-icon name="cog" type="solid" color="#ff69b4"></box-icon>
+                  Admin Panel
+                </Link>
+              </li>
+            )}
 
             {/* Wishlist Link */}
             {isLoggedIn && (

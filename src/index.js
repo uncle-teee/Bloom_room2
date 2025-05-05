@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
 import App from "./App";
 import "./index.css";
+import 'boxicons'; // Import boxicons
 import "bootstrap/dist/css/bootstrap.min.css";
 // filepath: c:\Users\wambu\flower-app\src\index.js
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap's JavaScript

@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify"; // Import Toastify
-import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
-import "./Cart.css"; // Import the CSS file for styling
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./Cart.css";
+import { debounce } from "lodash"; // Import lodash for debouncing
 
 const Cart = () => {
   const navigate = useNavigate();
-  const [cart, setCart] = useState([]); // State to store cart items
+  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch cart items from the backend
   useEffect(() => {
     const fetchCart = async () => {
-      const token = localStorage.getItem("token"); // Get JWT token from localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         setError("You need to log in to view your cart.");
         setLoading(false);
@@ -26,14 +27,14 @@ const Cart = () => {
           `https://teekinyanjui.pythonanywhere.com/cart/${JSON.parse(localStorage.getItem("user")).id}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include token in Authorization header
+              Authorization: `Bearer ${token}`,
             },
           }
         );
-        setCart(response.data); // Set cart items
+        setCart(response.data);
       } catch (err) {
         console.error("Error fetching cart:", err);
-        setError("Failed to load cart items.");
+        setError("Failed to load cart items. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -42,8 +43,8 @@ const Cart = () => {
     fetchCart();
   }, []);
 
-  // Handle updating the quantity of an item in the cart
-  const handleUpdateQuantity = async (productId, newQuantity) => {
+  // Debounced function to update quantity
+  const debouncedUpdateQuantity = debounce(async (productId, newQuantity) => {
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("You need to log in to modify your cart.");
@@ -61,7 +62,6 @@ const Cart = () => {
         }
       );
 
-      // Update the cart state with the new quantity
       setCart((prevCart) =>
         prevCart.map((item) =>
           item.product_id === productId
@@ -74,6 +74,10 @@ const Cart = () => {
       console.error("Error updating quantity:", err);
       toast.error("Failed to update quantity.");
     }
+  }, 300);
+
+  const handleUpdateQuantity = (productId, newQuantity) => {
+    debouncedUpdateQuantity(productId, newQuantity);
   };
 
   // Handle removing an item from the cart
@@ -91,8 +95,7 @@ const Cart = () => {
         },
       });
 
-      // Update cart items after removal
-      setCart(cart.filter((item) => item.product_id !== productId));
+      setCart((prevCart) => prevCart.filter((item) => item.product_id !== productId));
       toast.success("Item removed from cart!");
     } catch (err) {
       console.error("Error removing item from cart:", err);
@@ -100,10 +103,10 @@ const Cart = () => {
     }
   };
 
-  // Calculate the total price of the cart
-  const calculateTotal = () => {
+  // Memoized calculation of total price
+  const calculateTotal = useMemo(() => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+  }, [cart]);
 
   if (loading) {
     return <div className="loading">Loading your cart...</div>;
@@ -115,7 +118,7 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      <ToastContainer /> {/* Add ToastContainer */}
+      <ToastContainer />
       <h2 className="cart-title">Your Cart</h2>
       {cart.length === 0 ? (
         <p className="empty-cart-message">Your cart is empty. Start shopping!</p>
@@ -124,7 +127,12 @@ const Cart = () => {
           <ul className="cart-items">
             {cart.map((item) => (
               <li key={item.product_id} className="cart-item">
-                <img src={item.image_url} alt={item.name} className="cart-item-image" />
+                <img
+                  src={item.image_url}
+                  alt={item.name}
+                  className="cart-item-image"
+                  loading="lazy" // Lazy load images
+                />
                 <div className="cart-item-details">
                   <h3 className="cart-item-name">{item.name}</h3>
                   <p className="cart-item-price">
@@ -176,11 +184,8 @@ const Cart = () => {
           </ul>
           <div className="cart-total">
             <span>Total:</span>
-            <span>{calculateTotal()} KES</span>
+            <span>{calculateTotal} KES</span>
           </div>
-          {/* <button className="checkout-button" onClick={() => navigate("/checkout")}>
-            Proceed to Checkout
-          </button> */}
         </div>
       )}
       <Link to="/shop" className="continue-shopping">

@@ -164,17 +164,6 @@ const Homepage = () => {
           ))}
         </div>
       </section>
-
-      {/* Call-to-Action Section */}
-      <section className="cta-section">
-        <h2>Stay Connected</h2>
-        <p>Sign up for our newsletter to receive updates and special offers!</p>
-        <form className="newsletter-form">
-          <input type="email" placeholder="Enter your email" className="newsletter-input" />
-          <button type="submit" className="newsletter-button">Subscribe</button>
-        </form>
-      </section>
-
       {/* Footer */}
       <Footer/>
     </div>

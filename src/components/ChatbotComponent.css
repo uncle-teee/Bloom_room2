@@ -1,0 +1,71 @@
+.chatbot-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #ffe4f0; /* Light pink background */
+    border-radius: 5px;
+    overflow: hidden;
+    border: 2px solid #ff69b4; /* Pink border */
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #fff0f6; /* Very light pink for the chat area */
+}
+
+.chat-message {
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #ffb6c1; /* Light pink for user messages */
+    color: #ffffff; /* White text */
+    align-self: flex-end;
+}
+
+.bot-message {
+    background-color: #ff69b4; /* Pink for bot messages */
+    color: #ffffff; /* White text */
+    align-self: flex-start;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 2px solid #ff69b4; /* Pink border for the input area */
+    background-color: #ffe4f0; /* Light pink background */
+}
+
+.chat-input-field {
+    flex-grow: 1;
+    border: 1px solid #ff69b4; /* Pink border for the input field */
+    border-radius: 5px;
+    padding: 8px;
+    margin-right: 10px;
+    background-color: #fff0f6; /* Very light pink */
+    color: #ff69b4; /* Pink text */
+}
+
+.chat-input-field::placeholder {
+    color: #ff69b4; /* Pink placeholder text */
+}
+
+.chat-send-button {
+    background-color: #ff69b4; /* Pink button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chat-send-button:hover {
+    background-color: #ff85c0; /* Slightly lighter pink on hover */
+}
