@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Wishlist.css";
+import axios from "axios";
 
 const Wishlist = () => {
   const [wishlistProducts, setWishlistProducts] = useState([]);
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem("token"); // Retrieve access token from localStorage
+  const user = localStorage.getItem("user"); // Retrieve userId from localStorage
+  const userId = user?.id;
 
   useEffect(() => {
     const fetchWishlistProducts = async () => {
       if (!token || !userId) return;
       try {
-        const response = await fetch("https://teekinyanjui.pythonanywhere.com/api/favorites", {
-          method: "GET",
+        const response = await axios.get("https://teekinyanjui.pythonanywhere.com/api/favorites", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -78,6 +78,17 @@ const Shop = () => {
     },
     [products]
   );
+  const handleViewDetails = (product) => {
+    navigate(`/product/${product.id}`, {
+      state: {
+        total: product.price,
+        image_url: product.image_url,
+        description: product.description,
+        name: product.name,
+      },
+    });
+  };
+  
 
   // Handle adding to cart
   const handleAddToCart = async (productId) => {
@@ -232,6 +243,10 @@ const Shop = () => {
                 Add to Cart
               </button>
             </div>
+            <br />
+            <button className="buy-now-button" onClick={() => handleViewDetails(product)}>
+                Buy Now              
+             </button>
           </div>
         ))}
       </div>

@@ -61,11 +61,11 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             {/* Common Links for All Users */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link bloom-link" to="/">
                 Home
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link className="nav-link bloom-link" to="/shop">
                 Shop

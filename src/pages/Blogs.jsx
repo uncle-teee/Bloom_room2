@@ -1,9 +1,26 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Blogs.css"; // Import the CSS file for styling
+import React, { useEffect, useState } from "react";
+
 
 const Blogs = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    // Simulate loading data
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Replace with your actual data fetching logic
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   const blogPosts = [
     {

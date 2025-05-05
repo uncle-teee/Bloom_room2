@@ -108,13 +108,23 @@ const Cart = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   }, [cart]);
 
+
+
   if (loading) {
-    return <div className="loading">Loading your cart...</div>;
+    return (
+      <div className="loading">
+        {[...Array(6)].map((_, index) => (
+          <div key={index} className="product-skeleton">
+            <div className="skeleton-image"></div>
+            <div className="skeleton-text"></div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+  if (error) return <div className="error">{error}</div>;
+
 
   return (
     <div className="cart-container">

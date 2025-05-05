@@ -40,7 +40,11 @@ const Homepage = () => {
   }, []);
 
   if (loading) {
-    return <div className="loading">Loading homepage...</div>;
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   if (error) {
@@ -66,7 +70,7 @@ const Homepage = () => {
       <section className="featured-products">
         <h2>Featured Products</h2>
         <div className="products-grid">
-          {featuredProducts.slice(0, 6).map((product) => ( // Display 6 products
+          {featuredProducts.slice(0, 5).map((product) => ( // Display 6 products
             <div key={product.id} className="product-card">
               <img src={product.image_url} alt={product.name} className="product-image" />
               <h3 className="product-name">{product.name}</h3>
@@ -85,7 +89,7 @@ const Homepage = () => {
         <Slider
           className="categories-carousel"
           autoplay={true}
-          autoplaySpeed={1800}
+          autoplaySpeed={1200}
           infinite={true}
           slidesToShow={4} // Number of visible slides
           slidesToScroll={1}

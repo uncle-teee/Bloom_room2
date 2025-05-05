@@ -47,7 +47,7 @@ const BlogDetails = () => {
       <button className="back-button" onClick={() => navigate(-1)}>
         Back
       </button>
-      <img src={blog.image} alt={blog.title} className="blog-details-image" />
+      <img src="/images/ChatGPT_Image.png" alt={blog.title} className="blog-details-image" />
       <h1 className="blog-details-title">{blog.title}</h1>
       <p className="blog-details-meta">
         By {blog.author} on {blog.date}
