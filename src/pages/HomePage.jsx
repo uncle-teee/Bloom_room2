@@ -85,21 +85,21 @@ const Homepage = () => {
         <Slider
           className="categories-carousel"
           autoplay={true}
-          autoplaySpeed={3000}
+          autoplaySpeed={1800}
           infinite={true}
-          slidesToShow={3} // Number of visible slides
+          slidesToShow={4} // Number of visible slides
           slidesToScroll={1}
           responsive={[
             {
               breakpoint: 768, // For tablets and smaller screens
               settings: {
-                slidesToShow: 2,
+                slidesToShow: 3,
               },
             },
             {
               breakpoint: 480, // For mobile screens
               settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
               },
             },
           ]}
@@ -107,13 +107,15 @@ const Homepage = () => {
           {categories.map((category, index) => {
             // Map category names to specific image paths
             const categoryImages = {
-              Roses: "/images/rose1.jpg",
-              Mixed: "/images/mixed1.jpg",
-              Sunflowers: "/images/sunflower1.jpg",
+              Roses: "/images/rose1.JPG",
+              Lilies: "/images/lily1.JPG",
+              Orchids: "/images/orchid1.JPG",
+              Mixed: "/images/mixed1.JPG",
+              Sunflowers: "/images/sunflower1.JPG",
               Advanced: "/images/advanced.JPG",
-              Gifts: "/images/gift1.jpg",
-              Tulips: "/images/tulip.jpg",
-              Sunflower: "/images/sunflower2.jpg",
+              Gifts: "/images/gift1.JPG",
+              Tulips: "/images/tulip.JPG",
+              Sunflower: "/images/sunflower2.JPG",
             };
 
             return (
