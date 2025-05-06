@@ -84,9 +84,9 @@ const Footer = () => {
         <div className="footer-section contact">
           <h4>Contact Us</h4>
           <p>Email: support@bloomroom.com</p>
-          <p>Phone: +254 700 000 000</p>
+          <p>Phone: +254 789 717 675</p>
           <p>Location: Nairobi, Kenya</p>
-          <p>Hours: Mon–Fri 9am–6pm</p>
+          <p>Hours: Mon–Sat 9am–6pm</p>
         </div>
 
         {/* Social Media */}
