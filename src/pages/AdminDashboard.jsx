@@ -77,6 +77,7 @@ const AdminDashboard = () => {
   const handleEditProduct = (product) => {
     setCurrentProduct(product);
     setShowEditProductModal(true);
+    console.log("Edit Product button clicked, showEditProductModal:", true); // Explicitly logging the state
   };
 
   const handleUpdateProduct = async (e) => {
@@ -149,6 +150,7 @@ const AdminDashboard = () => {
   const handleEditBlog = (blog) => {
     setCurrentBlog(blog);
     setShowEditBlogModal(true);
+    console.log("Edit Blog button clicked, showEditBlogModal:", true); // Explicitly logging the state
   };
 
   const handleUpdateBlog = async (e) => {
@@ -195,14 +197,17 @@ const AdminDashboard = () => {
       setCurrentBlog({ ...currentBlog, [name]: value });
     } else if (showAddBlogModal) {
       setNewBlog({ ...newBlog, [name]: value });
-    } else {
+    } else if (showAddProductModal) { // Ensure this is included
       setNewProduct({ ...newProduct, [name]: value });
     }
   };
 
-    const handleImageChange = (e) => {
-        setNewProduct({...newProduct, image: e.target.files[0]});
-    };
+  const handleImageChange = (e) => {
+    setNewProduct({...newProduct, image: e.target.files[0]});
+    if (showEditProductModal && e.target.files[0]) {
+      setCurrentProduct({...currentProduct, image: e.target.files[0]});
+    }
+  };
 
   if (loading) {
     return <div className="loading-spinner">Loading...</div>;
@@ -233,6 +238,76 @@ const AdminDashboard = () => {
               + Add Product
             </button>
           </div>
+          {showAddProductModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <h3>Add Product</h3>
+                <form onSubmit={handleAddProduct}>
+                  <div className="form-group">
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={newProduct.name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Price</label>
+                    <input
+                      type="number"
+                      name="price"
+                      value={newProduct.price}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Stock</label>
+                    <input
+                      type="number"
+                      name="stock"
+                      value={newProduct.stock}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Category</label>
+                    <input
+                      type="text"
+                      name="category"
+                      value={newProduct.category}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Image</label>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={handleImageChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-actions">
+                    <button type="submit" className="save-button">
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="cancel-button"
+                      onClick={() => setShowAddProductModal(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
           <table className="table">
             <thead>
               <tr>
@@ -275,6 +350,46 @@ const AdminDashboard = () => {
               + Add Blog
             </button>
           </div>
+          {showAddBlogModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <h3>Add Blog</h3>
+                <form onSubmit={handleAddBlog}>
+                  <div className="form-group">
+                    <label>Title</label>
+                    <input
+                      type="text"
+                      name="title"
+                      value={newBlog.title}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Content</label>
+                    <textarea
+                      name="content"
+                      value={newBlog.content}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-actions">
+                    <button type="submit" className="save-button">
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="cancel-button"
+                      onClick={() => setShowAddBlogModal(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
           <table className="table">
             <thead>
               <tr>
@@ -302,77 +417,6 @@ const AdminDashboard = () => {
           </table>
         </section>
 
-        {showAddProductModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>Add Product</h3>
-              <form onSubmit={handleAddProduct}>
-                <div className="form-group">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={newProduct.name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Price</label>
-                  <input
-                    type="number"
-                    name="price"
-                    value={newProduct.price}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Stock</label>
-                  <input
-                    type="number"
-                    name="stock"
-                    value={newProduct.stock}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Category</label>
-                  <input
-                    type="text"
-                    name="category"
-                    value={newProduct.category}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Image</label>
-                  <input
-                    type="file"
-                    name="image"
-                    onChange={handleImageChange}
-                    required
-                  />
-                </div>
-                <div className="form-actions">
-                  <button type="submit" className="save-button">
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    className="cancel-button"
-                    onClick={() => setShowAddProductModal(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
         {showEditProductModal && (
           <div className="modal">
             <div className="modal-content">
@@ -383,7 +427,7 @@ const AdminDashboard = () => {
                   <input
                     type="text"
                     name="name"
-                    value={currentProduct.name}
+                    value={currentProduct?.name || ""} // Added optional chaining
                     onChange={handleInputChange}
                     required
                   />
@@ -393,7 +437,7 @@ const AdminDashboard = () => {
                   <input
                     type="number"
                     name="price"
-                    value={currentProduct.price}
+                    value={currentProduct?.price || ""} // Added optional chaining
                     onChange={handleInputChange}
                     required
                   />
@@ -403,7 +447,7 @@ const AdminDashboard = () => {
                   <input
                     type="number"
                     name="stock"
-                    value={currentProduct.stock}
+                    value={currentProduct?.stock || ""} // Added optional chaining
                     onChange={handleInputChange}
                     required
                   />
@@ -413,7 +457,7 @@ const AdminDashboard = () => {
                   <input
                     type="text"
                     name="category"
-                    value={currentProduct.category}
+                    value={currentProduct?.category || ""} // Added optional chaining
                     onChange={handleInputChange}
                     required
                   />
@@ -425,6 +469,7 @@ const AdminDashboard = () => {
                     name="image"
                     onChange={handleImageChange}
                   />
+                  {currentProduct?.image && <p>Current Image: {currentProduct.image.name || 'Uploaded'}</p>}
                 </div>
                 <div className="form-actions">
                   <button type="submit" className="save-button">
@@ -434,47 +479,6 @@ const AdminDashboard = () => {
                     type="button"
                     className="cancel-button"
                     onClick={() => setShowEditProductModal(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {showAddBlogModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>Add Blog</h3>
-              <form onSubmit={handleAddBlog}>
-                <div className="form-group">
-                  <label>Title</label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={newBlog.title}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Content</label>
-                  <textarea
-                    name="content"
-                    value={newBlog.content}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-actions">
-                  <button type="submit" className="save-button">
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    className="cancel-button"
-                    onClick={() => setShowAddBlogModal(false)}
                   >
                     Cancel
                   </button>
@@ -494,7 +498,7 @@ const AdminDashboard = () => {
                   <input
                     type="text"
                     name="title"
-                    value={currentBlog.title}
+                    value={currentBlog?.title || ""} // Added optional chaining
                     onChange={handleInputChange}
                     required
                   />
@@ -503,7 +507,7 @@ const AdminDashboard = () => {
                   <label>Content</label>
                   <textarea
                     name="content"
-                    value={currentBlog.content}
+                    value={currentBlog?.content || ""} // Added optional chaining
                     onChange={handleInputChange}
                     required
                   />

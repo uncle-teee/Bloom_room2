@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./SingleProduct.css"; // Add styles for the single product page
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const SingleProduct = ({ setProducts }) => {
   const location = useLocation();
@@ -100,20 +100,22 @@ const SingleProduct = ({ setProducts }) => {
 
   // Handle checkout
   const handleCheckout = async () => {
-    if (!phone.startsWith("254")) {
-      toast.error("Please enter a valid phone number in the 254 format.");
-      return;
-    }
+    // if (!phone.startsWith("254")) {
+    //   toast.error("Please enter a valid phone number in the 254 format.");
+    //   return;
+    // }
+    console.log(total, phone)
+    toast.success("Please wait");
+    let data = new FormData();
+    data.append("amount", total); // Use the total amount passed from the Cart page
+    data.append("phone", phone); // Use the phone number from the input
 
     try {
-      const response = await axios.post("https://teekinyanjui.pythonanywhere.com/api/mpesa_payment", {
-        amount: total, // Use the total amount passed from the Cart page
-        phone,
-      });
+      const response = await axios.post("https://teekinyanjui.pythonanywhere.com/api/mpesa_payment", data);
 
       if (response.status === 200) {
         toast.success(response.data.message); // Show success message from backend
-        navigate("/thank-you"); // Redirect to a thank-you page
+        // navigate("/thank-you"); // Redirect to a thank-you page
       }
     } catch (error) {
       console.error("Payment failed:", error);
@@ -127,6 +129,7 @@ const SingleProduct = ({ setProducts }) => {
 
   return (
     <div className="single-product-container">
+      <ToastContainer /> {/* Toast notifications container */}
       <h2 className="single-product-title">{name}</h2>
       <img src={image_url} alt={name} className="single-product-image" />
       <p className="single-product-description">{description}</p>
@@ -141,7 +144,6 @@ const SingleProduct = ({ setProducts }) => {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <br />
         <button className="checkout-button" onClick={handleCheckout}>
           Proceed to Checkout
         </button>

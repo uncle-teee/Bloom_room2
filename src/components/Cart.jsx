@@ -11,6 +11,8 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { total, setTotal} = useState("")
+  const [phone, setPhone] = useState("");
 
   // Fetch cart items from the backend
   useEffect(() => {
@@ -108,6 +110,30 @@ const Cart = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   }, [cart]);
 
+   // Handle checkout
+   const handleCheckout = async () => {
+    // if (!phone.startsWith("254")) {
+    //   toast.error("Please enter a valid phone number in the 254 format.");
+    //   return;
+    // }
+    console.log(total, phone)
+    toast.success("Please wait");
+    let data = new FormData();
+    data.append("amount", total); // Use the total amount passed from the Cart page
+    data.append("phone", phone); // Use the phone number from the input
+
+    try {
+      const response = await axios.post("https://teekinyanjui.pythonanywhere.com/api/mpesa_payment", data);
+
+      if (response.status === 200) {
+        toast.success(response.data.message); // Show success message from backend
+        // navigate("/thank-you"); // Redirect to a thank-you page
+      }
+    } catch (error) {
+      console.error("Payment failed:", error);
+      toast.error("Payment failed. Please try again.");
+    }
+  };
 
 
   if (loading) {
@@ -133,7 +159,7 @@ const Cart = () => {
       {cart.length === 0 ? (
         <p className="empty-cart-message">Your cart is empty. Start shopping!</p>
       ) : (
-        <div className="cart-content">
+        <div className="cart-products">
           <ul className="cart-items">
             {cart.map((item) => (
               <li key={item.product_id} className="cart-item">
@@ -146,7 +172,7 @@ const Cart = () => {
                 <div className="cart-item-details">
                   <h3 className="cart-item-name">{item.name}</h3>
                   <p className="cart-item-price">
-                    {item.price} KES x {item.quantity} = {item.price * item.quantity} KES
+                    {item.price} KES 
                   </p>
                   <div className="cart-item-quantity">
                     <button
@@ -168,33 +194,38 @@ const Cart = () => {
                 </div>
                 <div className="cart-item-actions">
                   <button
-                    onClick={() =>
-                      navigate(`/product/${item.product_id}`, {
-                        state: {
-                          total: item.price * item.quantity,
-                          image_url: item.image_url,
-                          description: item.description,
-                          name: item.name,
-                        },
-                      })
-                    }
-                    className="cart-item-view-details"
-                  >
-                    View Details
-                  </button>
-                  <button
                     onClick={() => handleRemoveFromCart(item.product_id)}
                     className="cart-item-remove"
                   >
+                    <span className="icon-closed">
+                      <box-icon name="trash" type="solid" color="#ff69b4"></box-icon>
+                    </span>
+                    <span className="icon-open">
+                    <box-icon name='trash' animation='tada' color='#ff69b4' ></box-icon>
+                    </span>
                     Remove
                   </button>
                 </div>
+
               </li>
             ))}
           </ul>
+          <br />
           <div className="cart-total">
             <span>Total:</span>
             <span>{calculateTotal} KES</span>
+         </div>
+          <div className="checkout-form">
+            <h3>Enter Your Phone Number</h3>
+            <input
+              type="text"
+              placeholder="254712345678"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <button className="checkout-button" onClick={handleCheckout}>
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       )}

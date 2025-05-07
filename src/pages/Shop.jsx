@@ -44,7 +44,7 @@ const Shop = () => {
       if (!token || !userId) return; // Skip fetching wishlist if token or userId is not available
       try {
         setLoadingWishlist(true);
-        const response = await fetch(`https://teekinyanjui.pythonanywhere.com/api/favorites/${userId}`, {
+        const response = await fetch('https://teekinyanjui.pythonanywhere.com/api/favorites', {
           headers: {
             Authorization: `Bearer ${token}`, // Include the access token in the request
           },
@@ -78,6 +78,16 @@ const Shop = () => {
     },
     [products]
   );
+
+  const handleSearch = (value) => {
+    const filtered = products.filter((product) =>      //Returns the elements of an array that meet the condition specified in a callback function.
+    product.product_name.toLowerCase().includes(value.toLowerCase()))
+
+    setFilteredProducts(filtered);
+  }
+  
+  
+
   const handleViewDetails = (product) => {
     navigate(`/product/${product.id}`, {
       state: {
