@@ -179,6 +179,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   font-size: 12px;
+  
 }
 
 .table .edit-button {
@@ -189,6 +190,7 @@ body {
 .table .delete-button {
   background-color: #f44336;
   color: #fff;
+  margin-left: 8px ;
 }
 
 .table .edit-button:hover {
